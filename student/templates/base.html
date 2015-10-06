@@ -1,0 +1,116 @@
+{% load static from staticfiles %}
+{% url 'groups' as groups_url %}
+{% url 'home' as home_url %}
+{% url 'journal' as journal_url %}
+{% url 'exam' as exam_url %}
+{% url "contact_admin" as contact_admin_url %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf8"/>
+  <title>Сервіс Обліку Студентів - {% block meta_title %}{% endblock meta_title %}</title>
+  <meta name="description" value="Система обліку студентів навчального закладу">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <!--Include Style-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ PORTAL_URL }}{% static "css/main.css" %}">
+  {% block extra_css %}{% endblock extra_css %}
+
+</head>
+<body>
+
+  <!--Start Container-->
+  <div class="container">
+
+	<!--start Header-->
+	<div class="row" id="header">
+
+	  <!--Logo-->
+	  {% block logo %}
+	  <div class="col-xs-8">
+		<h1>Сервіс обліку студентів</h1>
+	  </div>
+	  {% endblock logo %}
+
+	  <!--Groups Menu-->
+	  {% block menu_groups %}
+	  <div class="col-xs-4" id="group-selector">
+		<strong>Група: </strong>
+		<select>
+		  <option value="">Усі Студенти</option>
+		  <option value="">БЗ, Терехова Валерия (№254)</option>
+		  <option value="">ИС, Терехов Євгеній (№255)</option>
+		  <option value="">МтМ, Ребус Юлія (№256)</option>
+		</select>
+	  </div>
+	  {% endblock menu_groups %}
+
+	</div>
+	<!-- End Header-->
+
+	<!--sTART sUB hEADER-->
+	{% block sub_header %}
+	<div class='row' id='sub-header'>
+	  <div class="col-xs-12">
+		<ul class="nav nav-tabs" role="tablist">
+
+		  <li role="presentation" {% if request.path == home_url %}class="active"{% endif %}>
+		    <a href="{{ PORTAL_URL }}{% url "home" %}?order_by=last_name">Студенти</a></li>
+		  <li role="presentation" {% if journal_url in request.path %}class="active"{% endif %}>
+		    <a href="{{ PORTAL_URL }}{% url "journal" %}">Відвідування</a></li>
+		  <li role="presentation" {% if groups_url in request.path %}class="active"{% endif %}>
+		    <a href="{{ PORTAL_URL }}{% url "groups" %}?order_by=leader">Групи</a></li\>
+		  <li role="presentation" {% if exam_url in request.path %}class="active"{% endif %}>
+		    <a href="{{ PORTAL_URL }}{% url "exam" %}?order_by=leader">Іспити</a></li\>
+
+		  <li role="presentation" {% if contact_admin_url in request.path %}class="active"{% endif %}>
+		    <a href="{{ PORTAL_URL }}{% url "contact_admin" %}">Контакт</a></li>
+		    
+		</ul>
+	  </div>
+	</div>
+	{% endblock sub_header %}
+	<!-- END SUBHEADER-->
+
+	<!--Start mainpage content-->
+	<div class="row" id="content-columns">
+	<div class="col-xs-12" id="content-column">
+
+	  <!--Status Massage-->
+	  
+	  {% block status_message %}
+	  {% if request.GET.status_message %}
+	  	<div class="alert alert-success" role="alert">
+	  	  {{ request.GET.status_message }}
+	  	</div>
+	  {% endif %}
+	  {% endblock %}
+
+	  <h2>{% block title %}{% endblock title %}</h2>
+	  {% block content %}{% endblock content %}
+				
+	  </div>
+	</div>
+	<!--End mainpage-->
+
+	<!--Start footer-->
+	{% block footer %}
+	<div class="row" id="footer">
+	  <div class="col-xs-12">
+		&copy; 2015 Сервіс обліку студентів
+	  </div>
+	</div>
+	{% endblock footer %}
+	<!--End footer-->
+
+  </div>
+  <!--End container-->
+
+  <!--java script section-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <!--for own js in view-->
+  {% block extra_js %}{% endblock extra_js %}
+</body>
+</html>
